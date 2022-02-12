@@ -2,8 +2,7 @@
 //  Label.swift
 //  Filterchips
 //
-//  Created by skrr on 26.01.22.
-//  Copyright © 2022 mic. All rights reserved.
+//  Created by misteu on 26.01.22.
 //
 
 import UIKit

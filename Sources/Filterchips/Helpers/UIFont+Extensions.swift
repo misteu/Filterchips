@@ -2,7 +2,7 @@
 //  UIFont+Extensions.swift
 //  Filterchips
 //
-//  Created by skrr on 12.02.22.
+//  Created by misteu on 12.02.22.
 //
 
 import UIKit
