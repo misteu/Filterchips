@@ -65,4 +65,5 @@ let chipsContainer = FilterChipViewContainer(
 ```
 
 ## Changelog
+*0.0.2 - updated readme, added code examples*
 *0.0.1 - initial version with basic configuration*
