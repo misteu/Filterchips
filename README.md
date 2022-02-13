@@ -1,13 +1,20 @@
 # Filterchips
 
-![grafik](https://user-images.githubusercontent.com/35889530/153731719-050e4ed6-a06d-4cc7-8b1a-a557471c6726.png)
+Filterchips is a lightweight UI component that lets you add an aligned field of chips that can be used for filtering (or anything else). It has no other dependencies, supports Auto-Layout and is Swift only.
 
-Filterchips is a UI component that lets you add an aligned field of chips that can be used for filtering.
+In a later release it will support laying out any view conforming to some protocol.
 
 `FilterChipViewContainer` is instantiated with an array of `FilterChipView`s. These are aligned automatically in a line breaking layout based on a given configuration.
 
-Currently, the `FilterChipViewContainer.Configuration` is pretty basic.
+You can configure the layout via `FilterChipViewContainer.Configuration` which is currently pretty basic.
 It supports configuring the alignment, vertical margin between the chips and the horizontal margins between rows.
+
+![grafik](https://user-images.githubusercontent.com/35889530/153749776-a1a80d8c-ba79-48b8-9587-712877abca34.png)
+![grafik](https://user-images.githubusercontent.com/35889530/153749803-0b5c0a44-e630-44b4-b9d7-23c9c186fdb8.png)
+![grafik](https://user-images.githubusercontent.com/35889530/153749838-b5ebf340-9d3d-4352-998e-1256c3c3277c.png)
+![grafik](https://user-images.githubusercontent.com/35889530/153749904-41663420-4487-427b-ac88-18078201a6c7.png)
+
+![grafik](https://user-images.githubusercontent.com/35889530/153749740-4f4c8e13-7679-45c1-81d7-e7a6884dce8c.png)
 
 ## Example
 
