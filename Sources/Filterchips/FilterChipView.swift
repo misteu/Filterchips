@@ -24,7 +24,7 @@ public class FilterChipView: UIControl {
     /// Current row of the chip, is changed based on surrounding chips.
     var row = 0
     /// The text on the chip.
-    let text: String
+    var text: String
     /// The label of the chip.
     let label = Label()
     /// The `UIImageView` showing the checkmark when the chip is in a selected state.
@@ -46,15 +46,37 @@ public class FilterChipView: UIControl {
     ///   - selectedColor: The color for the selected state.
     ///   - tapHandler: The tap handler triggered when tapping on the chip.
     public init(text: String, selectedColor: UIColor, isSelected: Bool = false, tapHandler: ((Bool) -> Void)?) {
-        self.text = text
+      let truncatedText = Self.truncatedText(from: text)
+      self.text = truncatedText
         self.selectedColor = selectedColor
         checkmarkView.tintColor = selectedColor
         super.init(frame: .zero)
         self.isSelected = isSelected
         self.tapHandler = tapHandler
-        label.set(text: text, style: .buttonText)
+        label.set(text: truncatedText, style: .buttonText)
         setup()
     }
+
+  static private func truncatedText(from text: String) -> String {
+    var retVal = text
+    let font = UIFont.preferredFont(forTextStyle: .body)
+    if text.width(withConstrainedHeight: font.pointSize,
+                  font: font) > UIScreen.main.bounds.width - 100 {
+
+      retVal = cutIfTooLong(text: text)
+    }
+    return retVal
+  }
+
+  static private func cutIfTooLong(text: String) -> String {
+    var retVal = text.truncate(to: text.count - 2)
+    let font = UIFont.preferredFont(forTextStyle: .body)
+    if retVal.width(withConstrainedHeight: font.pointSize,
+                    font: font) > UIScreen.main.bounds.width - 100 {
+    retVal = cutIfTooLong(text: retVal)
+    }
+    return retVal
+  }
 
     /// Not supported. Always `nil`.
     required init?(coder: NSCoder) { nil }
@@ -67,7 +89,7 @@ public class FilterChipView: UIControl {
         updateText()
         layer.borderWidth = 2
         layer.cornerRadius = 16
-        updateBorder()
+        updateBorder(animated: false)
     }
 
     /// Sets view hierarchy and constraints.
@@ -108,13 +130,13 @@ public class FilterChipView: UIControl {
     /// Updates the text based on selection state.
     private func updateText() {
         UIView.animate(withDuration: 0.3) {
-            self.label.textColor = self.isSelected ? self.selectedColor : .darkGray.withAlphaComponent(0.8)
+			self.label.textColor = self.isSelected ? self.selectedColor : .systemGray
         }
     }
 
     /// Updates the border based on selection state.
-    private func updateBorder() {
-        UIView.animate(withDuration: 0.3) {
+	private func updateBorder(animated: Bool = true) {
+		UIView.animate(withDuration: animated ? 0.3 : 0.0) {
             if self.isSelected {
                 self.layer.borderColor = self.selectedColor.cgColor
             } else {
@@ -134,4 +156,25 @@ public class FilterChipView: UIControl {
         static let selected = UIImage(systemName: "checkmark.circle.fill")
         static let notSelected = UIImage(systemName: "circle")
     }
+}
+
+extension String {
+  func width(withConstrainedHeight height: CGFloat, font: UIFont) -> CGFloat {
+    let constraintRect = CGSize(width: .greatestFiniteMagnitude, height: height)
+    let boundingBox = self.boundingRect(with: constraintRect,
+                                        options: .usesLineFragmentOrigin,
+                                        attributes: [.font: font], context: nil)
+
+    return ceil(boundingBox.width)
+  }
+
+  func truncate(to length: Int, trailing: String = "…") -> String {
+    var substring = self
+    if let index = substring.firstIndex(of: "\n") {
+      substring.removeSubrange((index..<substring.endIndex))
+    }
+    substring = String(substring.prefix(length))
+
+    return (self.count > length || substring != self) ? substring + trailing : self
+  }
 }

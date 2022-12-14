@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Combine
 
 /// Container holding and aligning `FilterChipView`s based on given `Configuration`.
 public final class FilterChipViewContainer: UIView {
@@ -21,6 +22,8 @@ public final class FilterChipViewContainer: UIView {
         }
     }
 
+	/// Height of the view when all chips are laid out, set in `layoutSubviews`.
+	@Published public var height: CGFloat = 0
     /// The view's current width, set in `layoutSubviews`.
     private(set) var currentWidth: CGFloat?
     /// The constraint between the last chip's bottom and the container's bottom.
@@ -150,6 +153,9 @@ public final class FilterChipViewContainer: UIView {
         currentWidth = frame.width
         if window != nil {
             updateLayout()
+			if frame.height > 0 {
+				height = frame.height
+			}
         }
     }
 }
